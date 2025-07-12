@@ -7,3 +7,87 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+model User {
+  email         String    @unique
+  id            String    @id   @default(cuid())  
+  username      String    @unique
+  password      String
+  avatar        String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  ownedRooms    Room[]          @relation("RoomOwner")
+  participants  Participant[]
+  messages      Message[]
+}
+
+model Room {
+  id            String     @id  @default(cuid())
+  ownerId       String
+  name          String
+  description   String?         
+  isPrivate     Boolean         @default(false)
+  maxUsers      Int             @default(10)
+  inviteCode    String          @unique
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  participants  Participant[]
+  messages      Message[]
+
+  //relations
+  owner      User     @relation("RoomOwner" , fields: [ownerId] ,references: [id] , onDelete: Cascade)
+}
+
+model Participant { 
+  id          String        @id   @default(cuid())
+  userId      String
+  roomId      String
+  joinedAt    DateTime            @default(now())
+  leftAt      DateTime?           
+  role        ParticipantRole     @default(MEMBER)
+  status      ParticipantStatus   @default(ACTIVE)
+
+  //relationships
+  user     User     @relation(fields: [userId] , references: [id] , onDelete: Cascade)
+  room     Room     @relation(fields: [roomId] , references: [id] , onDelete: Cascade)
+
+  @@unique([userId,roomId])
+  @@map("participants")
+}
+
+model Message {
+  id        String          @id   @default(cuid())
+  senderId  String
+  roomId    String
+  content   String
+  type      MessageType           @default(TEXT)
+  createdAt DateTime              @default(now())
+
+  //relationships
+  sender    User      @relation(fields: [senderId] , references: [id] , onDelete: Cascade)
+  room      Room      @relation(fields: [roomId], references: [id] , onDelete: Cascade)
+
+  @@map("messages") 
+}
+
+
+enum ParticipantRole {
+  OWNER
+  MODERATOR
+  MEMBER
+}
+
+enum ParticipantStatus {
+  ACTIVE
+  INACTIVE
+  DISCONNECTED
+}
+
+enum MessageType {
+  TEXT
+  SYSTEM
+  FILE
+}
