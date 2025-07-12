@@ -1,3 +1,5 @@
+import { WebSocket } from "ws";
+
 export interface WebSocketMessage {
   type: string;
   payload: any;
@@ -21,7 +23,7 @@ export interface ChatMessage extends WebSocketMessage {
     content: string;
     roomId: string;
     timestamp: number;
-  }
+  };
 }
 
 export interface RoomUpdate extends WebSocketMessage {
