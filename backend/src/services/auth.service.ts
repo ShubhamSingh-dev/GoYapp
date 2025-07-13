@@ -53,7 +53,7 @@ export class AuthService {
     return { user, token };
   }
 
-  async Login(data: LoginData) {
+  async login(data: LoginData) {
     //find user
 
     const user = await prisma.user.findUnique({

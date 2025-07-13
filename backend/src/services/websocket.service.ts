@@ -359,7 +359,7 @@ export class WebSocketService {
       .filter(Boolean) as ConnectedUser[];
   }
 
-  getConnectedUsers(): number {
+  getConnectedUsersCount(): number {
     return this.connectedUsers.size;
   }
 
