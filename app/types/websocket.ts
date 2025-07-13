@@ -1,6 +1,6 @@
 export interface WebSocketMessage {
   type: string;
-  paylaod: any;
+  payload: any;
   roomId?: string;
   userId?: string;
 }
