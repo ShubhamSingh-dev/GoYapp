@@ -36,8 +36,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/rooms", roomRoutes);
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/rooms", roomRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {
