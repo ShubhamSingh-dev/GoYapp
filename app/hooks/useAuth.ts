@@ -61,6 +61,6 @@ export const useAuth = () => {
     isAuthenticated: !!user && !!token,
     login: loginUser,
     register: registerUser,
-    loagout: logoutUser,
+    logout: logoutUser,
   };
 };

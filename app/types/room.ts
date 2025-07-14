@@ -24,6 +24,11 @@ export interface Participant {
   joinedAt: Date;
   role: "OWNER" | "MODERATOR" | "MEMBER";
   status: "ACTIVE" | "INACTIVE" | "DISCONNECTED";
+  mediaState?: {
+    video: boolean;
+    audio: boolean;
+    screen: boolean;
+  };
   user: {
     id: string;
     username: string;
@@ -36,7 +41,7 @@ export interface CreateRoomData {
   name: string;
   description?: string;
   isPrivate?: boolean;
-  maxUsers?: number;
+  maxUsers: number;
 }
 
 export interface RoomState {
