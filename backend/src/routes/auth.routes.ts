@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { register } from "module";
 import { validateRequest } from "../middleware/validation.middleware";
 import { loginSchema, registerSchema } from "../utils/validation.utils";
 import { AuthController } from "../controllers/auth.controller";

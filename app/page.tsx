@@ -1,209 +1,295 @@
-import { Button } from "./components/ui/Button";
-import Input from "./components/ui/Input";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "./components/ui/Card";
+"use client";
 
-export default function Home() {
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/hooks/useAuth";
+import { Button } from "@/app/components/ui/Button";
+import { Card } from "@/app/components/ui/Card";
+import Link from "next/link";
+import { Video, ArrowRight, Play, Star, CheckCircle } from "lucide-react";
+
+export default function HomePage() {
+  const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      router.push("/dashboard");
+    }
+  }, [isAuthenticated, isLoading, router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="p-8 space-y-8 max-w-2xl mx-auto">
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Button Variants</h2>
-        <div className="flex flex-wrap gap-4">
-          <Button variant="primary">Primary</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="destructive">Destructive</Button>
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-blue-50">
+      {/* Navigation */}
+      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                <Video className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-xl font-bold text-gray-900">GoyApp</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <Link href="/login">
+                <Button variant="ghost">Sign In</Button>
+              </Link>
+              <Link href="/register">
+                <Button>Get Started</Button>
+              </Link>
+            </div>
+          </div>
         </div>
-      </section>
+      </nav>
 
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Button Sizes</h2>
-        <div className="flex flex-wrap items-center gap-4">
-          <Button size="sm">Small</Button>
-          <Button size="md">Medium</Button>
-          <Button size="lg">Large</Button>
-        </div>
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Button States</h2>
-        <div className="flex flex-wrap gap-4">
-          <Button loading>Loading</Button>
-          <Button disabled>Disabled</Button>
-          <Button loading disabled>
-            Loading & Disabled
-          </Button>
-        </div>
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Combinations</h2>
-        <div className="flex flex-wrap gap-4">
-          <Button variant="primary" size="lg">
-            Large Primary
-          </Button>
-          <Button variant="destructive" size="sm">
-            Small Destructive
-          </Button>
-          <Button variant="outline" size="lg" loading>
-            Large Outline Loading
-          </Button>
-          <Button variant="ghost" size="sm" disabled>
-            Small Ghost Disabled
-          </Button>
-        </div>
-      </section>
-
-      <section className="space-y-6">
-        <h2 className="text-2xl font-bold">Input Components</h2>
-
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium">Basic Inputs</h3>
-          <Input label="Username" placeholder="Enter your username" />
-          <Input label="Email" type="email" placeholder="your@email.com" />
-          <Input label="Password" type="password" placeholder="••••••••" />
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium">Input States</h3>
-          <Input
-            label="Disabled Input"
-            disabled
-            placeholder="Can't edit this"
-          />
-          <Input
-            label="Error State"
-            placeholder="Something went wrong"
-            error="This field is required"
-          />
-          <Input
-            label="With Helper Text"
-            placeholder="Additional information"
-            helperText="This text will help the user"
-          />
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium">Without Labels</h3>
-          <Input placeholder="Search..." className="w-full" />
-          <Input placeholder="Enter value" error="Invalid input" />
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium">Combined with Buttons</h3>
-          <div className="flex gap-2">
-            <Input placeholder="Enter promo code" className="flex-1" />
-            <Button variant="primary">Apply</Button>
+      {/* Hero Section */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              Connect, Collaborate,{" "}
+              <span className="text-primary-600">Create</span>
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+              Experience seamless video meetings with crystal-clear audio,
+              real-time chat, and powerful collaboration tools. All in one
+              secure platform.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/register">
+                <Button size="lg" className="flex items-center space-x-2">
+                  <span>Start Meeting Now</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+              <Button
+                variant="outline"
+                size="lg"
+                className="flex items-center space-x-2"
+              >
+                <Play className="w-4 h-4" />
+                <span>Watch Demo</span>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="space-y-6">
-        <h2 className="text-2xl font-bold">Card Components</h2>
+      {/* Features Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Everything you need for productive meetings
+            </h2>
+            <p className="text-lg text-gray-600">
+              Powerful features designed to enhance your team collaboration
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Basic Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Basic Card</CardTitle>
-              <CardDescription>This is a simple card example</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700">
-                This is the content area of the card. You can put any content
-                here.
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Card with Footer Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Card with Actions</CardTitle>
-              <CardDescription>Includes footer with buttons</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Input label="Email" placeholder="your@email.com" />
-            </CardContent>
-            <CardFooter className="justify-end gap-2">
-              <Button variant="outline">Cancel</Button>
-              <Button variant="primary">Submit</Button>
-            </CardFooter>
-          </Card>
-
-          {/* Card with Image */}
-          <Card className="md:col-span-2">
-            <CardHeader>
-              <CardTitle>Featured Content</CardTitle>
-              <CardDescription>Card spanning two columns</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col md:flex-row gap-6">
-                <img
-                  src="https://via.placeholder.com/300x200"
-                  alt="Placeholder"
-                  className="rounded-md w-full md:w-1/3"
-                />
-                <div className="space-y-4">
-                  <h4 className="font-medium text-lg">Card with Image</h4>
-                  <p className="text-gray-700">
-                    This card demonstrates how you can include images alongside
-                    other content. The layout is responsive and adjusts for
-                    different screen sizes.
-                  </p>
-                  <Button variant="ghost">Learn More →</Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Stats Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Statistics</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Total Users</span>
-                <span className="font-medium">1,234</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Active Now</span>
-                <span className="font-medium">567</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Conversion</span>
-                <span className="font-medium">12.5%</span>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Alert Card */}
-          <Card className="border-red-200 bg-red-50">
-            <CardHeader>
-              <CardTitle className="text-red-700">Important Notice</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-red-600">
-                This is an alert-style card. You can customize the colors and
-                content to display important warnings or notifications.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button variant="destructive" size="sm">
-                Acknowledge
-              </Button>
-            </CardFooter>
-          </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Feature Cards (same as before) */}
+            {/* ... */}
+          </div>
         </div>
       </section>
+
+      {/* Stats Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="text-4xl font-bold text-primary-600 mb-2">
+                10M+
+              </div>
+              <div className="text-gray-600">Meeting Minutes</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-primary-600 mb-2">
+                500K+
+              </div>
+              <div className="text-gray-600">Active Users</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-primary-600 mb-2">
+                150+
+              </div>
+              <div className="text-gray-600">Countries</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Trusted by teams worldwide
+            </h2>
+            <p className="text-lg text-gray-600">
+              Join thousands of satisfied users who transformed their
+              collaboration
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Card className="p-6">
+              <div className="flex items-center mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="w-5 h-5 text-yellow-400 fill-current"
+                  />
+                ))}
+              </div>
+              <p className="text-gray-600 mb-4">
+                "GoyApp has revolutionized our remote team meetings. The video
+                quality is exceptional and the interface is intuitive."
+              </p>
+              <div className="flex items-center">
+                <div className="w-10 h-10 rounded-full bg-gray-200 mr-3"></div>
+                <div>
+                  <div className="font-medium">Sarah Johnson</div>
+                  <div className="text-sm text-gray-500">CTO, TechCorp</div>
+                </div>
+              </div>
+            </Card>
+
+            {/* Add 2 more testimonial cards */}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Simple, transparent pricing
+            </h2>
+            <p className="text-lg text-gray-600">
+              Choose the plan that fits your needs
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Card className="p-8 text-center">
+              <h3 className="text-xl font-bold mb-2">Free</h3>
+              <div className="text-4xl font-bold mb-6">
+                $0<span className="text-lg text-gray-500">/month</span>
+              </div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center text-gray-600">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                  Up to 50 participants
+                </li>
+                <li className="flex items-center text-gray-600">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                  40 minute limit
+                </li>
+                <li className="flex items-center text-gray-600">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                  Basic features
+                </li>
+              </ul>
+              <Button variant="outline" className="w-full">
+                Get Started
+              </Button>
+            </Card>
+
+            {/* Add 2 more pricing cards */}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-primary-600 text-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-6">
+            Ready to transform your meetings?
+          </h2>
+          <p className="text-xl mb-8 max-w-3xl mx-auto">
+            Join thousands of teams who use GoyApp for seamless collaboration
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/register">
+              <Button
+                size="lg"
+                className="bg-white text-primary-600 hover:bg-gray-100"
+              >
+                Start Free Trial
+              </Button>
+            </Link>
+            <Button
+              variant="outline"
+              size="lg"
+              className="text-white border-white hover:bg-white/10"
+            >
+              Contact Sales
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <div className="flex items-center space-x-2 mb-4">
+              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                <Video className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-xl font-bold">GoyApp</span>
+            </div>
+            <p className="text-gray-400">
+              The modern video collaboration platform for teams of all sizes.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="font-bold mb-4">Product</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href="#" className="text-gray-400 hover:text-white">
+                  Features
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-gray-400 hover:text-white">
+                  Pricing
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-gray-400 hover:text-white">
+                  Integrations
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-gray-400 hover:text-white">
+                  Updates
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Add 2 more footer columns */}
+        </div>
+        <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-gray-800 text-center text-gray-400">
+          <p>© {new Date().getFullYear()} GoyApp. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 }
