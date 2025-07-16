@@ -11,6 +11,13 @@ export const loginSchema = Joi.object({
   password: Joi.string().required(),
 });
 
+export const updateUserSchema = Joi.object({
+  username: Joi.string().min(3).max(20).optional(),
+  email: Joi.string().email().optional(),
+  password: Joi.string().min(6).optional(),
+  avatar: Joi.string().uri().optional(),
+}).options({ stripUnknown: true, abortEarly: false });
+
 export const createRoomSchema = Joi.object({
   name: Joi.string().min(1).max(50).required(),
   description: Joi.string().max(200).optional(),

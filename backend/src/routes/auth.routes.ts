@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { validateRequest } from "../middleware/validation.middleware";
-import { loginSchema, registerSchema } from "../utils/validation.utils";
+import {
+  loginSchema,
+  registerSchema,
+  updateUserSchema,
+} from "../utils/validation.utils";
 import { AuthController } from "../controllers/auth.controller";
 import { authenticateToken } from "../middleware/auth.middleware";
 
@@ -23,7 +27,7 @@ router.post("/logout", authenticateToken, authController.logout);
 router.put(
   "/update",
   authenticateToken,
-  validateRequest(registerSchema),
+  validateRequest(updateUserSchema),
   authController.updateProfile
 );
 

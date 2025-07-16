@@ -3,7 +3,10 @@ import { Schema } from "joi";
 
 export const validateRequest = (schema: Schema) => {
   return (req: Request, res: Response, next: NextFunction): void => {
-    const { error } = schema.validate(req.body);
+    const { error, value } = schema.validate(req.body, {
+      abortEarly: false,
+      stripUnknown: true,
+    });
 
     if (error) {
       res.status(400).json({
@@ -11,12 +14,14 @@ export const validateRequest = (schema: Schema) => {
         message: "Validation error",
         errors: error.details.map((detail) => ({
           field: detail.path.join("."),
-          message: detail.message,
+          message: detail.message.replace(/['"]/g, ""),
         })),
       });
       return;
     }
 
+    // Replace req.body with the validated value
+    req.body = value;
     next();
   };
 };
